@@ -1,0 +1,60 @@
+.LOGTABLE EMP_STG_LT12;
+ LOGON 10.74.161.248/td_user24,td_user24;
+
+.BEGIN IMPORT MLOAD
+ TABLES     arun_142275_multiload1 ,arun_142275_multiload2
+ WORKTABLES  arun_work_multiload12,arun_work_multiload22
+ ERRORTABLES EMPLOYEE_ET_362 EMPLOYEE_UV_362,
+ EMPLOYEE1_ET_362 EMPLOYEE1_UV_362 ;
+
+.LAYOUT ARUN_EMPLOYEE_STG;
+.FIELD in_EmployeeNo * VARCHAR(10);
+.FIELD in_FirstName * VARCHAR(30);
+.FIELD in_LastName * VARCHAR(30);
+.FIELD in_BirthDate * VARCHAR(10);
+.FIELD in_JoinedDate * VARCHAR(10);
+.FIELD in_DepartmentNo * VARCHAR(02);
+
+ .DML LABEL arun_142275_multiload1  ;
+
+ INSERT INTO arun_142275_multiload1 VALUES
+ (:in_EmployeeNo,
+  :in_FirstName,
+  :in_Lastname,
+  :in_BirthDate, 
+  :in_JoinedDate,
+  :in_DepartmentNo);
+
+
+ .DML LABEL arun_142275_multiload2 ;
+
+ INSERT INTO arun_142275_multiload2 VALUES
+ (:in_EmployeeNo,
+  :in_FirstName,
+  :in_Lastname,
+  :in_BirthDate, 
+  :in_JoinedDate,
+  :in_DepartmentNo);
+
+.IMPORT INFILE emp.txt
+
+  LAYOUT ARUN_EMPLOYEE_STG
+
+  FORMAT VARTEXT ','
+
+  APPLY arun_142275_multiload1
+
+  APPLY arun_142275_multiload2;
+
+ .END MLOAD;
+
+ .LOGOFF;
+
+
+
+
+
+
+
+
+3:49 PM 2/8/2018

@@ -1,0 +1,133 @@
+create table :
+******************************************
+1.permanent table
+
+create <set/multiset> table <table_name>
+(
+	<table options>
+	<column defintions>	
+	<index defintions>
+);
+table options : journal/fallback
+index defintions : primary index,secondary index and primary partioned index
+*******************************************
+create table arun_142275_employee
+(
+	employee integer,
+	firstname varchar(30),
+	lastname varchar(30),
+	deptno byteint
+);
+*****************************************
+2.mutiset tables:
+
+create multiset table arun_142275_multiset
+(
+	employee integer,
+	firstname varchar(30),
+	lastname varchar(30),
+	deptno byteint
+);
+
+insert into arun_142275_multiset values(142275,'Arun','Vijayan',10);
+******************************************
+3.volatile table:
+
+create volatile table arun_dept_volatile
+(
+	deptno integer,
+	avgsalary integer,
+	maxsalary integer,
+	minsalary integer
+) on commit preserve rows
+
+insert into arun_dept_volatile values(10,16000,25000,9000);
+******************************************
+
+create set global temporary table arun_142275_dept_global
+(
+	deptno integer,
+	avg_salary integer,
+	max_salary integer,
+	min_salary integer
+)
+******************************************
+create set table arun_142275_emp
+(
+	employeeno integer,
+	firstname varchar(30),
+	lastname varchar(30),
+	dob date format 'YYYY-MM-DD',
+	departmentno byteint
+)
+
+insert into arun_142275_emp values(142275,'Arun','Vijayan','1996-05-17',10);
+
+========To add a column with same date format and drop a column
+
+alter table arun_142275_emp add birthdate date format 'YYYY-MM-DD' , drop dob;
+
+create table arun_142275_students
+(
+	student_id integer,
+	first_name varchar(40),
+	last_name varchar(40),
+	class_code varchar(2),
+	grade_pt float
+)
+
+insert into arun_142275_students values(123250,'martin','philips','SR',3.00);
+INSERT INTO arun_142275_students VALUES(125634, 'Henry','Hanson', 'FR' ,2.88)
+INSERT INTO arun_142275_students VALUES(234121 ,'Wendy', 'Thomas', 'FR' ,4.00)
+INSERT INTO arun_142275_students VALUES(231222,'Susie', 'Wilson' ,'SO', 3.80)
+INSERT INTO arun_142275_students VALUES(423400, 'Michael','Larkins' , 'FR', 0.00)
+INSERT INTO arun_142275_students VALUES(260000,'Stanley', 'Johnson',NULL,NULL)
+INSERT INTO arun_142275_students VALUES(280023,'Richard', 'McRoberts', 'JR', 1.90)
+INSERT INTO arun_142275_students VALUES(322133,'Jimmy', 'Bond' , 'JR' ,3.95)
+INSERT INTO arun_142275_students VALUES(324652, 'Delaney', 'Danny', 'SR', 3.35)
+INSERT INTO arun_142275_students VALUES(333450,'Andy', 'Smith','SO' ,2.00)
+
+==============questions================
+1)To extract 1st name, last name, class_code,  grade_pt  from the above table
+
+	select first_name,last_name,class_code,grade_pt from arun_142275_students;
+
+2)To dislay student_id,last name, grade_pt from student table which returns the student grade_pt >=3.00
+
+	select first_name,last_name,class_code,grade_pt from arun_142275_students where grade_pt >=3.00;
+
+3)To display last name,1st name from student table such that it displays the student records whose grade_pt =3.0 and 4.0
+
+4)To display student_id last name,1st name grade_pt from student table such that  the student records whose grade_pt =3.0 or 4.0
+	
+	select first_name,last_name,class_code,grade_pt from arun_142275_students where grade_pt IN (3.00,4.00);
+
+5)To display the student record whose grade_pt is 3 or 4 class code="FR"
+
+	select first_name,last_name,class_code,grade_pt from arun_142275_students where grade_pt IN (3.00,4.00) and class_code='FR';
+
+6)To display studnet record whose grade_pt  & class code is empty
+	
+	select first_name,last_name,class_code,grade_pt from arun_142275_students where grade_pt  IS NULL and class_code IS NULL;
+
+7) To display the student details whose grade_pt is !>=3 and class_code="SR" 
+
+	select first_name,last_name,class_code,grade_pt from arun_142275_students where  not (grade_pt  >= 3  and grade_pt is not null and class_code <> 'SR' and class_code is not null);
+(or)
+	IN()  v=>  =ANY()
+	
+
+
+select * from arun_142275_students where last_name like 'La%';
+
+select * from arun_142275_students where last_name like all ('_a%' );
+
+select * from arun_142275_students where last_name like all ('%S%','%M%' );
+
+select * from arun_142275_students where last_name like all ('%s%','%m%' );
+
+select 2+4*5,(2+4)*5;
+
+select salary(format 'zz,zz9,99')  from pay_table;
+
+select salary(format 'zz,zz9,99') ,salary/12(format 'Z,ZZ9,99') from pay_table;

@@ -1,0 +1,54 @@
+.LOGTABLE PRODUCT_STG_LT122;
+ LOGON 10.74.161.248/td_user24,td_user24;
+
+.BEGIN IMPORT MLOAD
+ TABLES     arun_142275_product_101 ,arun_142275_product_201
+ WORKTABLES  arun_work_product_122,arun_work_product_132
+ ERRORTABLES PRODUCT_ET1_122 PRODUCT_UV1_122,
+ PRODUCT_ET_132 PRODUCT_UV_132 ;
+
+.LAYOUT ARUN_PRODUCT_STG;
+.FIELD in_product_id * VARCHAR(10);
+.FIELD in_product_name * VARCHAR(30);
+
+
+ .DML LABEL arun_142275_product_101  ;
+
+ INSERT INTO arun_142275_product_101 VALUES
+ (:in_product_id,
+  :in_product_name
+ );
+
+
+ .DML LABEL arun_142275_product_201 ;
+
+ INSERT INTO arun_142275_product_201 VALUES
+ (:in_product_id,
+  :in_product_name
+  );
+
+.IMPORT INFILE arun_142275_product.txt
+
+  LAYOUT ARUN_PRODUCT_STG
+
+  FORMAT VARTEXT '|'
+
+  APPLY arun_142275_product_101 where in_product_id=101
+
+  APPLY arun_142275_product_201  where in_product_id=201;
+
+ .END MLOAD;
+
+ .LOGOFF;
+
+
+
+
+
+
+
+
+
+
+
+
